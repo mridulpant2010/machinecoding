@@ -1,37 +1,63 @@
-from flask import Flask,jsonify,request
+from flask import Flask, jsonify, request, abort
+import sys
+
+sys.path.append("C:/Users/mridul/OneDrive/Documents/GitHub/machinecoding/")
 from cache.src.exceptions.NotFoundException import NotFoundException
-from cache.src.port.inport.CacheUseCase import CacheUseCase
+from cache.src.service.CacheServiceImpl import CacheServiceImpl
 
-app  = Flask(__name__)
+app = Flask(__name__)
 
-cache_use_case = CacheUseCase()
+capacity = 4
+cache_use_case = CacheServiceImpl(4)
 
-@app.route('/app/v1/cache/items/<int:key>',methods=['GET'])
+"""
+TODO
+- loggers are missing, add them to proper place
+- authentication is missing 
+- how will we make it concurrent 
+- understand when to throw and which error.
+"""
+
+
+@app.route("/app/v1/cache/items/<string:key>", methods=["GET"])
 def get_cache_items_by_key(key):
+    print(f"key is {key}")
     try:
         result = cache_use_case.get(key)
     except NotFoundException:
-        return None,404
-    
-    return jsonify(result),200
+        abort(404)
 
-@app.route('/app/v1/cache/add-items/',methods=['POST'])
+    return jsonify(result), 200
+
+
+@app.route("/app/v1/cache/add-items/", methods=["POST"])
 def update_cache_items():
     try:
         data = request.get_json()
-        key = data['key']
-        value = data['value']
+        print(data)
+        key = data["key"]
+        value = data["value"]
+        print(key, value)
         result_add = cache_use_case.put(key, value)
     except NotFoundException:
-        return None,404
-    except Exception as e:
-        pass
-    return jsonify(result_add),201
-    
-@app.route('/app/v1/cache/remove/<int:key>',methods=['DELETE'])
+        abort(404)
+    return jsonify(result_add), 201
+
+
+@app.route("/app/v1/cache/remove/<string:key>", methods=["DELETE"])
 def delete_cache(key):
     try:
-        op =  cache_use_case.remove_cache(key)
+        op = cache_use_case.delete(key)
     except NotFoundException:
-        return None,404
-    return jsonify(op),200
+        abort(404)
+    return jsonify(op), 200
+
+
+@app.route("/app/v1/cache/list/all", methods=["GET"])
+def list_all():
+    op = cache_use_case.list_all()
+    return jsonify(op), 200
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080, debug=True)

@@ -27,3 +27,7 @@ class CacheService(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def clear(self):
         pass
+    
+    @abc.abstractmethod
+    def list_all(self):
+        pass
