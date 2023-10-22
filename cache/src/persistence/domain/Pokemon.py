@@ -1,5 +1,5 @@
-class Pokemon:
-    def __init__(self, id, name, type, height, weight, abilities):
+class Pokemon:        
+    def __init__(self, id=None, name=None, type=None, height=None, weight=None, abilities=None):
         self._id = id
         self._name = name
         self._type = type
@@ -57,10 +57,37 @@ class Pokemon:
 
     def asdict(self):
         return {
-            "_id": self._id,
-            "_abilities": self._abilities,
-            "_name": self._name,
-            "_type": self._type,
-            "_height": self._height,
-            "_weight": self._weight,
+            "id": self._id,
+            "abilities": self._abilities,
+            "name": self._name,
+            "type": self._type,
+            "height": self._height,
+            "weight": self._weight,
         }
+
+    class PokemonBuilder:
+        
+        def __init__(self):
+            self.pokemon = Pokemon()
+        
+        def with_abilities(self,abilities):
+            self.pokemon.abilities = abilities
+            return self
+        def with_name(self,name):
+            self.pokemon.name = name
+            return self
+        def with_type(self,type):
+            self.pokemon.type = type
+            return self
+        def with_height(self,height):
+            self.pokemon.height = height
+            return self
+        def with_weight(self,weight):
+            self.pokemon.weight = weight
+            return self
+        def with_id(self,id):
+            self.pokemon.id = id
+            return self
+        def build(self):
+            return self.pokemon
+            

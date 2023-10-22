@@ -14,9 +14,15 @@ cache_use_case = CacheServiceImpl(4)
 TODO
 - loggers are missing, add them to proper place
 - authentication is missing 
-- how will we make it concurrent 
+- how will we make it concurrent , 
+    - use of threadpool executor
 - understand when to throw and which error.
+- use of async and await 
+
 """
+
+# threading is for working in parallel, async is for waiting in parallel.
+# https://www.youtube.com/watch?v=Ii7x4mpIhIs
 
 
 @app.route("/app/v1/cache/items/<string:key>", methods=["GET"])

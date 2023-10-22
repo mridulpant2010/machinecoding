@@ -14,11 +14,10 @@ class CacheServiceImpl(CacheService):
     def get(self, key):
         if key not in self.cache.keys():
             raise NotFoundException("not found")
-        print(f"inside the get CacheServiceImpl method: {key}")
         self.least_recently_used.remove(key)
         self.least_recently_used.append(key)
         print(self.cache[key])
-        return self.cache[key].__dict__
+        return self.cache[key].asdict()
 
     def delete(self, key):
         if key not in self.cache.keys():
@@ -32,7 +31,7 @@ class CacheServiceImpl(CacheService):
 
         if key in self.cache.keys():
             self.least_recently_used.remove(key)
-
+            
         self.cache[key] = Pokemon(**value)  # value
         self.least_recently_used.append(key)
 
