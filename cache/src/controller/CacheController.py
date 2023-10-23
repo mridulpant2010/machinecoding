@@ -14,10 +14,13 @@ cache_use_case = CacheServiceImpl(4)
 TODO
 - loggers are missing, add them to proper place
 - authentication is missing 
+- proper status codes
 - how will we make it concurrent , 
     - use of threadpool executor
+    - use of async and await 
 - understand when to throw and which error.
-- use of async and await 
+- practice flask 
+- identify the design pitfalls in your code from SOLID perspective.
 
 """
 
