@@ -42,19 +42,19 @@ class ConcreteSubject(Subject):
     self._observers.append(observer)
   def detach(self,observer: Observer):
     self._observers.remove(observer)
-  def notify(self,observer: Observer):
+  def notify(self):
     for each_l in self._observers:
       each_l.update(self)
-  def some_business_logic(self,observer: Observer):
+  def some_business_logic(self):
     self._state = randint(1,3)
-    self.notify(observer)
+    self.notify()
 
 
 def main():
   subscriber: Observer = ConcreteObserver1()
   publisher: Subject  = ConcreteSubject()
   publisher.attach(subscriber)
-  publisher.some_business_logic(subscriber)
+  publisher.some_business_logic()
   publisher.detach(subscriber)
     
     
